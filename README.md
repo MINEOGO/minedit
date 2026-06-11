@@ -1,25 +1,29 @@
 # MinEdit
 
-minimalist web text editor designed for zero distraction coding
+Minimalist web text editor designed for zero distraction coding.
 
-## features
+## Features
 
-- ultra minimal ui no clutter bullshit anywhere
-- command palette menu for keyboard centric navigation
-- light dark themes that actually look usable and dont blind u
-- togglable line numbers and minimap for pure focus
-- running completely in browser
+- **React + Vite Architecture**: Fully structured, modular, and optimized.
+- **Top Microsoft-Style Navbar**: Command menus (File, Edit, View, Help) for simple workspace management.
+- **IndexedDB Auto-Saving**: Automatically saves your drafts to browser IndexedDB on every keystroke, ensuring zero data loss.
+- **Recent Files Menu**: Quickly open and delete recent drafts from browser storage.
+- **Bottom Status Bar**: Track chars count, lines count, file size, syntax, and save status.
+- **Syntax Auto-Detection**: Automatically detects file extensions to highlight.
+- **Code Auto-Correction**: Click-to-format option for auto-aligning indentation and styling.
+- **Smooth Typing**: Custom caretaker movement with smooth CSS transition curves.
+- **Mobile Responsive**: Fully usable across phones, tablets, and desktops.
 
-## keyboard shortcuts
+## Keyboard Shortcuts
 
-| shortcut | action |
+| Shortcut | Action |
 |---|---|
-| `ctrl + n` | new file |
-| `ctrl + o` | open file |
-| `ctrl + s` | save file |
-| `ctrl + f` | search in the code |
-| `esc` | toggle command palette |
+| `Ctrl + N` | New file |
+| `Ctrl + O` | Open file from local disk |
+| `Ctrl + S` | Download file copy / save |
+| `Ctrl + F` | Search in file |
+| `Esc` | Toggle Command Palette |
 
-## running ts
+## Credits
 
-js go to https://minedit.pages.dev/
+Created by dnezero & mineogo.
