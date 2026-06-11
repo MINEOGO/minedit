@@ -15,7 +15,10 @@ export default function CommandPalette({
   onSetFont,
   onSetFontSize,
   onShowWelcome,
-  onShowAbout
+  onShowAbout,
+  onRunCode,
+  onToggleConsole,
+  canRunCode
 }) {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -52,6 +55,10 @@ export default function CommandPalette({
           { label: 'Open File...', key: 'Ctrl+O', action: () => { onOpenLocal(); onClose(); } },
           { label: 'Save Copy', key: 'Ctrl+S', action: () => { onSaveLocal(); onClose(); } },
           { label: 'Auto Correct Code', action: () => { onAutoCorrect(); onClose(); } },
+          ...(canRunCode ? [
+            { label: 'Run Code', key: 'Ctrl+Enter', action: () => { onRunCode(); onClose(); } },
+            { label: 'Toggle Console', action: () => { onToggleConsole(); onClose(); } }
+          ] : []),
           { label: 'Toggle Minimap', action: () => { onToggleMinimap(); onClose(); } },
           { label: 'Toggle Line Numbers', action: () => { onToggleLineNumbers(); onClose(); } },
           { label: 'Set Theme...', action: () => { setCurrentMenu('theme'); setQuery(''); setSelectedIndex(0); } },

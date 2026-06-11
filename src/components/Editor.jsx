@@ -42,6 +42,37 @@ export default function Editor({
     }
   }, [isSearchOpen]);
 
+  useEffect(() => {
+    const handleJumpToLine = (e) => {
+      const lineNum = e.detail.line;
+      if (!textareaRef.current) return;
+
+      const linesList = content.split('\n');
+      let targetIndex = 0;
+      for (let i = 0; i < Math.min(lineNum - 1, linesList.length); i++) {
+        targetIndex += linesList[i].length + 1;
+      }
+
+      textareaRef.current.focus();
+      textareaRef.current.selectionStart = targetIndex;
+      textareaRef.current.selectionEnd = targetIndex + (linesList[lineNum - 1] || '').length;
+
+
+      const approxLineHeight = fontSize * 1.48;
+      textareaRef.current.scrollTop = Math.max(0, (lineNum - 4) * approxLineHeight);
+
+      setTimeout(() => {
+        updateCaret();
+      }, 50);
+    };
+
+    window.addEventListener('minedit-jump-to-line', handleJumpToLine);
+    return () => {
+      window.removeEventListener('minedit-jump-to-line', handleJumpToLine);
+    };
+  }, [content, fontSize]);
+
+
   const updateCaret = () => {
     if (!textareaRef.current || !caretMirrorRef.current || !customCaretRef.current) return;
     const area = textareaRef.current;

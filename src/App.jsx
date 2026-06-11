@@ -3,9 +3,11 @@ import Navbar from './components/Navbar';
 import Editor from './components/Editor';
 import StatusBar from './components/StatusBar';
 import CommandPalette from './components/CommandPalette';
+import ConsolePanel from './components/ConsolePanel';
 import Toast from './components/Toast';
 import { saveFileToDB, getAllFilesFromDB, deleteFileFromDB } from './utils/db';
 import { detectLanguage, autoCorrectCode } from './utils/languages';
+import { isRunnable } from './utils/codeRunner';
 
 export default function App() {
   const [content, setContent] = useState('');
@@ -29,9 +31,11 @@ export default function App() {
   const [cursorCol, setCursorCol] = useState(1);
 
   const [toast, setToast] = useState({ visible: false, title: '', message: '', actions: [] });
+  const [isConsoleOpen, setIsConsoleOpen] = useState(false);
 
   const fileInputRef = useRef(null);
   const saveTimeoutRef = useRef(null);
+  const consolePanelRef = useRef(null);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -91,6 +95,11 @@ export default function App() {
       } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
         e.preventDefault();
         setIsSearchOpen(true);
+      } else if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        if (isRunnable(language) && consolePanelRef.current) {
+          consolePanelRef.current.runCode();
+        }
       } else if (e.key === 'Escape') {
         e.preventDefault();
         setIsCommandPaletteOpen(prev => !prev);
@@ -316,6 +325,15 @@ export default function App() {
         onCursorChange={(ln, col) => { setCursorLine(ln); setCursorCol(col); }}
       />
 
+      <ConsolePanel
+        ref={consolePanelRef}
+        language={language}
+        content={content}
+        isOpen={isConsoleOpen}
+        onToggle={() => setIsConsoleOpen(true)}
+        onClose={() => setIsConsoleOpen(false)}
+      />
+
       <StatusBar
         line={cursorLine}
         col={cursorCol}
@@ -341,6 +359,9 @@ export default function App() {
         onSetFontSize={handleSetFontSize}
         onShowWelcome={handleShowWelcome}
         onShowAbout={handleShowAbout}
+        canRunCode={isRunnable(language)}
+        onRunCode={() => { if (consolePanelRef.current) consolePanelRef.current.runCode(); }}
+        onToggleConsole={() => setIsConsoleOpen(prev => !prev)}
       />
 
       <Toast
